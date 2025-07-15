@@ -241,19 +241,18 @@
         function goToPage(pageType) {
             // 각 페이지로 이동하는 함수
             const urls = {
-                'ei': '/ei-page.html',
-                'sn': '/sn-page.html', 
-                'tf': '/tf-page.html',
-                'jp': '/jp-page.html',
-                'explore': '/explore-page.html'
+                'ei': 'https://chaeavivi.github.io/find_me/ei-page.html',
+                'sn': 'https://chaeavivi.github.io/find_me/sn-page.html', 
+                'tf': 'https://chaeavivi.github.io/find_me/tf-page.html',
+                'jp': 'https://chaeavivi.github.io/find_me/jp-page.html',
+                'explore': 'https://chaeavivi.github.io/find_me/explore-page.html'
             };
             
             console.log(`${pageType.toUpperCase()} 페이지로 이동합니다.`);
             
-            // 실제 페이지 이동 (개발 환경에서는 alert으로 대체)
+            // 실제 페이지 이동
             if (urls[pageType]) {
-                // window.location.href = urls[pageType];
-                alert(`${pageType.toUpperCase()} 페이지로 이동합니다: ${urls[pageType]}`);
+                window.location.href = urls[pageType];
             }
         }
 
