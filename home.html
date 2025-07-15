@@ -146,15 +146,44 @@
             .types-container {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 15px;
+                max-width: 320px;
+                margin: 0 auto 40px auto;
             }
             
             .type-card {
-                padding: 25px;
+                padding: 20px;
                 aspect-ratio: 1;
             }
             
             .type-title {
-                font-size: 1.8rem;
+                font-size: 1.4rem;
+            }
+            
+            .type-subtitle {
+                font-size: 1rem;
+            }
+            
+            .explore-button {
+                padding: 20px;
+                font-size: 1.1rem;
+                min-width: 120px;
+                max-width: 150px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .types-container {
+                grid-template-columns: repeat(2, 1fr);
+                max-width: 280px;
+                gap: 12px;
+            }
+            
+            .type-card {
+                padding: 18px;
+            }
+            
+            .type-title {
+                font-size: 1.2rem;
             }
             
             .type-subtitle {
@@ -162,15 +191,10 @@
             }
             
             .explore-button {
-                padding: 25px;
-                font-size: 1.2rem;
-                min-width: 120px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .types-container {
-                grid-template-columns: 1fr;
+                padding: 18px;
+                font-size: 1rem;
+                min-width: 100px;
+                max-width: 120px;
             }
         }
 
