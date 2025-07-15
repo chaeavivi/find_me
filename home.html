@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FIND M.E</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f4f1e8;
+            background-image: 
+                radial-gradient(circle at 20% 20%, rgba(139, 119, 101, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(160, 130, 98, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(101, 84, 63, 0.05) 0%, transparent 50%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .header {
+            margin-bottom: 60px;
+            color: #5d4037;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .compass-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #8d6e63;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(93, 64, 55, 0.2);
+        }
+
+        .types-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 60px;
+        }
+
+        .type-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .type-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+
+        .type-card.ei {
+            border: 4px solid #800020;
+        }
+
+        .type-card.sn {
+            border: 4px solid #6A5ACD;
+        }
+
+        .type-card.tf {
+            border: 4px solid #FF6F61;
+        }
+
+        .type-card.jp {
+            border: 4px solid #A89F91;
+        }
+
+        .type-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 12px;
+        }
+
+        .type-subtitle {
+            font-size: 1.3rem;
+            color: #7f8c8d;
+            font-weight: 600;
+        }
+
+        .explore-button {
+            background: linear-gradient(45deg, #1a237e, #303f9f);
+            color: white;
+            border: none;
+            padding: 30px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(26, 35, 126, 0.3);
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 150px;
+            margin: 0 auto;
+        }
+
+        .explore-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(26, 35, 126, 0.4);
+            background: linear-gradient(45deg, #0d47a1, #1a237e);
+        }
+
+        .explore-button:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .types-container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+            
+            .type-card {
+                padding: 25px;
+                aspect-ratio: 1;
+            }
+            
+            .type-title {
+                font-size: 1.8rem;
+            }
+            
+            .type-subtitle {
+                font-size: 0.9rem;
+            }
+            
+            .explore-button {
+                padding: 25px;
+                font-size: 1.2rem;
+                min-width: 120px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .types-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* 애니메이션 효과 */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .type-card {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .type-card:nth-child(1) { animation-delay: 0.1s; }
+        .type-card:nth-child(2) { animation-delay: 0.2s; }
+        .type-card:nth-child(3) { animation-delay: 0.3s; }
+        .type-card:nth-child(4) { animation-delay: 0.4s; }
+
+        .explore-button {
+            animation: fadeInUp 0.6s ease forwards;
+            animation-delay: 0.5s;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="compass-icon">🧭</div>
+            <h1>FIND M.E</h1>
+        </div>
+
+        <div class="types-container">
+            <div class="type-card ei" onclick="goToPage('ei')">
+                <div class="type-title">E-I</div>
+                <div class="type-subtitle">행동 원리</div>
+            </div>
+            
+            <div class="type-card sn" onclick="goToPage('sn')">
+                <div class="type-title">S-N</div>
+                <div class="type-subtitle">정보 수집</div>
+            </div>
+            
+            <div class="type-card tf" onclick="goToPage('tf')">
+                <div class="type-title">T-F</div>
+                <div class="type-subtitle">의사 결정</div>
+            </div>
+            
+            <div class="type-card jp" onclick="goToPage('jp')">
+                <div class="type-title">J-P</div>
+                <div class="type-subtitle">생활 양식</div>
+            </div>
+        </div>
+
+        <button class="explore-button" onclick="goToPage('explore')">탐험카드</button>
+    </div>
+
+    <script>
+        function goToPage(pageType) {
+            // 각 페이지로 이동하는 함수
+            const urls = {
+                'ei': '/ei-page.html',
+                'sn': '/sn-page.html', 
+                'tf': '/tf-page.html',
+                'jp': '/jp-page.html',
+                'explore': '/explore-page.html'
+            };
+            
+            console.log(`${pageType.toUpperCase()} 페이지로 이동합니다.`);
+            
+            // 실제 페이지 이동 (개발 환경에서는 alert으로 대체)
+            if (urls[pageType]) {
+                // window.location.href = urls[pageType];
+                alert(`${pageType.toUpperCase()} 페이지로 이동합니다: ${urls[pageType]}`);
+            }
+        }
+
+        function startExploration() {
+            goToPage('explore');
+        }
+
+        // 타입 카드 클릭 이벤트 (goToPage 함수로 대체됨)
+        document.querySelectorAll('.type-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>
