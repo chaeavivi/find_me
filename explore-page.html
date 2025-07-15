@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EX 카드 검색</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+            color: white;
+            padding: 60px 30px 40px;
+            text-align: center;
+            position: relative;
+        }
+
+        .home-btn {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 0.85em;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .home-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 70px 20px 30px;
+            }
+            
+            .home-btn {
+                top: 10px;
+                left: 10px;
+                padding: 6px 12px;
+                font-size: 0.8em;
+            }
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .search-section {
+            padding: 40px 30px;
+        }
+
+        .search-container {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            justify-content: center;
+        }
+
+        .search-input {
+            width: 200px;
+            padding: 15px 20px;
+            border: 2px solid #ddd;
+            border-radius: 25px;
+            font-size: 1.2em;
+            text-align: center;
+            outline: none;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .search-input:focus {
+            border-color: #4a90e2;
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+        }
+
+        .search-btn {
+            background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(74, 144, 226, 0.3);
+        }
+
+        .result-section {
+            text-align: center;
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-container {
+            max-width: 400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .card-container:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .card-image:hover {
+            transform: scale(1.05);
+        }
+
+        .card-info {
+            padding: 20px;
+            background: #f8f9fa;
+        }
+
+        .card-number {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #4a90e2;
+            margin-bottom: 5px;
+        }
+
+        .card-name {
+            display: none;
+        }
+
+        .card-category {
+            font-size: 0.9em;
+            color: #666;
+            background: #e9ecef;
+            padding: 5px 10px;
+            border-radius: 15px;
+            display: inline-block;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 60px 30px;
+            color: #666;
+            font-size: 1.2em;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px 30px;
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #4a90e2;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            max-width: 90%;
+            max-height: 90%;
+            margin-top: 2%;
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #bbb;
+        }
+
+        .instructions {
+            background: #e7f3ff;
+            color: #0c5460;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="https://chaeavivi.github.io/find_me/home.html" class="home-btn">← 메인으로</a>
+            <h1>MBTI 탐험카드</h1>
+            <p>MBTI 탐험카드를 검색하세요</p>
+        </div>
+
+        <div class="search-section">
+            <div class="instructions">
+                💡 카드 번호를 입력하세요 (예: 11, 12, 13...)
+            </div>
+            
+            <div class="search-container">
+                <input type="text" id="searchInput" class="search-input" placeholder="카드 번호" maxlength="2">
+                <button class="search-btn" onclick="searchCard()">검색</button>
+            </div>
+
+            <div id="errorMessage"></div>
+            <div id="loadingMessage"></div>
+            
+            <div class="result-section" id="resultSection">
+                <div class="no-results">
+                    위에 카드 번호를 입력하고 검색 버튼을 클릭하세요.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="imageModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img class="modal-content" id="modalImage">
+    </div>
+
+    <script>
+        // ===== GitHub 폴더 URL 설정 (MBTI 탐험카드 폴더) =====
+        const GITHUB_FOLDER_URL = 'https://github.com/chaeavivi/find_me/tree/main/EX';
+        // =============================================
+
+        let allImages = [];
+        let isLoaded = false;
+
+        const searchInput = document.getElementById('searchInput');
+        const resultSection = document.getElementById('resultSection');
+
+        // 페이지 로드 시 자동으로 이미지 목록 불러오기
+        window.addEventListener('load', loadImages);
+
+        // 검색 이벤트
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') searchCard();
+        });
+
+        // 숫자만 입력 가능하도록 제한
+        searchInput.addEventListener('input', (e) => {
+            e.target.value = e.target.value.replace(/[^0-9]/g, '');
+        });
+
+        async function loadImages() {
+            if (isLoaded) return;
+            
+            showLoading('카드 목록을 불러오는 중...');
+            clearError();
+
+            try {
+                const urlInfo = parseGithubUrl(GITHUB_FOLDER_URL);
+                if (!urlInfo) {
+                    throw new Error('GitHub URL 설정이 올바르지 않습니다.');
+                }
+
+                const apiUrl = `https://api.github.com/repos/${urlInfo.owner}/${urlInfo.repo}/contents/${urlInfo.path}`;
+                const response = await fetch(apiUrl);
+                
+                if (!response.ok) {
+                    throw new Error(`폴더를 찾을 수 없습니다. (${response.status})`);
+                }
+                
+                const contents = await response.json();
+                
+                allImages = contents
+                    .filter(item => item.type === 'file' && isImageFile(item.name))
+                    .map(item => ({
+                        name: item.name,
+                        downloadUrl: item.download_url,
+                        htmlUrl: item.html_url,
+                        cardNumber: extractCardNumber(item.name)
+                    }))
+                    .filter(item => item.cardNumber); // 카드 번호가 있는 것만 필터링
+
+                isLoaded = true;
+                hideLoading();
+                
+                if (allImages.length === 0) {
+                    showError('카드 이미지를 찾을 수 없습니다.');
+                } else {
+                    showInitialMessage();
+                }
+                
+            } catch (error) {
+                showError(`오류: ${error.message}`);
+                hideLoading();
+            }
+        }
+
+        function parseGithubUrl(url) {
+            const match = url.match(/github\.com\/([^\/]+)\/([^\/]+)(?:\/tree\/[^\/]+\/(.+))?/);
+            if (!match) return null;
+            
+            return {
+                owner: match[1],
+                repo: match[2],
+                path: match[3] || ''
+            };
+        }
+
+        function isImageFile(filename) {
+            return /\.(png|jpg|jpeg|gif|svg|webp|bmp)$/i.test(filename);
+        }
+
+        function extractCardNumber(filename) {
+            // 파일명에서 두 자리 숫자 추출 (예: "11.png", "card_12.jpg", "생활양식_13.png")
+            const match = filename.match(/(\d{2})/);
+            return match ? match[1] : null;
+        }
+
+        function searchCard() {
+            const cardNumber = searchInput.value.trim();
+            
+            if (!cardNumber) {
+                showError('카드 번호를 입력하세요.');
+                return;
+            }
+
+            if (cardNumber.length !== 2) {
+                showError('두 자리 숫자를 입력하세요.');
+                return;
+            }
+
+            if (!isLoaded) {
+                showError('카드 목록을 불러오는 중입니다. 잠시 후 다시 시도하세요.');
+                return;
+            }
+
+            // 해당 번호의 카드 찾기
+            const foundCard = allImages.find(image => image.cardNumber === cardNumber);
+            
+            if (foundCard) {
+                displayCard(foundCard);
+                clearError();
+            } else {
+                showError(`카드 번호 ${cardNumber}를 찾을 수 없습니다.`);
+                showInitialMessage();
+            }
+        }
+
+        function displayCard(card) {
+            resultSection.innerHTML = `
+                <div class="card-container">
+                    <img src="${card.downloadUrl}" alt="${card.name}" class="card-image" 
+                         onclick="openModal('${card.downloadUrl}', '${card.name}')">
+                </div>
+            `;
+        }
+
+        function showInitialMessage() {
+            resultSection.innerHTML = `
+                <div class="no-results">
+                    위에 카드 번호를 입력하고 검색 버튼을 클릭하세요.
+                </div>
+            `;
+        }
+
+        function showError(message) {
+            document.getElementById('errorMessage').innerHTML = `<div class="error">${message}</div>`;
+        }
+
+        function clearError() {
+            document.getElementById('errorMessage').innerHTML = '';
+        }
+
+        function showLoading(message) {
+            document.getElementById('loadingMessage').innerHTML = `
+                <div class="loading">
+                    <div class="spinner"></div>
+                    ${message}
+                </div>
+            `;
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingMessage').innerHTML = '';
+        }
+
+        function openModal(imageUrl, imageName) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            modal.style.display = 'block';
+            modalImg.src = imageUrl;
+            modalImg.alt = imageName;
+        }
+
+        function closeModal() {
+            document.getElementById('imageModal').style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('imageModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>
