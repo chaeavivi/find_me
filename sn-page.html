@@ -28,7 +28,7 @@
         }
 
         .header {
-            background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+            background: linear-gradient(135deg, #6A5ACD 0%, #5B4FC7 100%);
             color: white;
             padding: 60px 30px 40px;
             text-align: center;
@@ -268,7 +268,7 @@
     <div class="container">
         <div class="header">
             <a href="https://chaeavivi.github.io/find_me/home.html" class="home-btn">← 메인으로</a>
-            <h1>정보 수집 카드</h1>
+            <h1>인식 기능 카드</h1>
             <p>S-N (감각-직관) 카드를 검색하세요</p>
         </div>
 
@@ -299,7 +299,7 @@
     </div>
 
     <script>
-        // ===== GitHub 폴더 URL 설정 (정보 수집 카드 폴더) =====
+        // ===== GitHub 폴더 URL 설정 (인식 기능 카드 폴더) =====
         const GITHUB_FOLDER_URL = 'https://github.com/chaeavivi/find_me/tree/main/SN';
         // =============================================
 
@@ -384,7 +384,7 @@
         }
 
         function extractCardNumber(filename) {
-            // 파일명에서 두 자리 숫자 추출 (예: "11.png", "card_12.jpg", "정보수집_13.png")
+            // 파일명에서 두 자리 숫자 추출 (예: "11.png", "card_12.jpg", "인식기능_13.png")
             const match = filename.match(/(\d{2})/);
             return match ? match[1] : null;
         }
